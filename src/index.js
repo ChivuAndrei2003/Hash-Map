@@ -14,7 +14,11 @@ class HashMap {
     }
     return hashCode;
   }
-  set(key, value) {}
+  set(key, value) {
+    const hash = this.hash;
+    const index = hash % this.size;
+    const bucket = this.buckets[index];
+  }
   get(key) {}
   has(key) {}
   remove(key) {}

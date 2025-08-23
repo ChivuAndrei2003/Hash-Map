@@ -14,11 +14,14 @@ class HashMap {
     }
     return hashCode;
   }
+
   set(key, value) {
-    const hash = this.hash;
+   /* const hash = this.hash;
     const index = hash % this.size;
-    const bucket = this.buckets[index];
+    const bucket = this.buckets[index]; */
+    
   }
+  
   get(key) {}
   has(key) {}
   remove(key) {}
@@ -28,3 +31,9 @@ class HashMap {
   values() {}
   entries() {}
 }
+/*
+const test = new HashMap();
+test.set('apple', 'banana');*/
+
+const testHash = new HashMap();
+console.log(testHash.hash('Andrei'));

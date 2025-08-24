@@ -25,7 +25,7 @@ class HashMap {
     if (!this.buckets[index]) {
       this.buckets[index] = [];
     }
-
+   
     const buckets = this.buckets[index];
     for (let i = 0; i < this.buckets.length; i++) {
       if (buckets[i][0] === key) {
@@ -58,21 +58,43 @@ class HashMap {
     }
   }
 
-  get(key) {}
+  get(key) {
+    const index = this.hash(key);
+    const bucket = this.buckets[index];
+    
+    if (!bucket) {
+      return null;
+    }
+    for (let i = 0; i < bucket; i++){
+      if (bucket[i][0] === key) {
+        return bucket[i][1];
+      } 
+    }
+    return null;
+
+  }
   has(key) {}
   remove(key) {}
   length() {}
   clear() {}
   keys() {}
   values() {}
-  entries() {}
+  entries() { 
+     return this.buckets;
+  }
+  /* */
+ 
 }
+
 //buckets example :
+/*
 BUCKET = [
     [0]        [1]
   ["apple",   "red"  ], // FIRST element: [key, value]
   ["orange", "orange"], // SECOND element: [key, value]
 ];
-
+*/
 const testHash = new HashMap();
-console.log(testHash.hash("Andrei"));
+ testHash.set("Andrei").entries();
+
+console.log(testHash);

@@ -17,8 +17,9 @@ class HashMap {
 
   set(key, value) {
     const index = this.hash(key);
+    const buckets = this.buckets[index];
 
-    if (index < 0 || index >= this.buckets.length) {
+    if (index < 0 || index >= buckets.length) {
       throw new Error("Trying to access index out of bounds");
     }
 
@@ -26,8 +27,7 @@ class HashMap {
       this.buckets[index] = [];
     }
    
-    const buckets = this.buckets[index];
-    for (let i = 0; i < this.buckets.length; i++) {
+    for (let i = 0; i < buckets.length; i++) {
       if (buckets[i][0] === key) {
         buckets[i][1] = value;
         return;
@@ -49,7 +49,7 @@ class HashMap {
     this.buckets = new Array(this.capacity);
     this.size = 0;
 
-    for (let bucket of this.buckets) {
+    for (let bucket of oldBuckets) {
       if (bucket) {
         for (let [key, value] of bucket) {
           this.set(key, value);
@@ -65,7 +65,7 @@ class HashMap {
     if (!bucket) {
       return null;
     }
-    for (let i = 0; i < bucket; i++){
+    for (let i = 0; i < bucket.length; i++){
       if (bucket[i][0] === key) {
         return bucket[i][1];
       } 
@@ -80,22 +80,33 @@ class HashMap {
     if (!bucket) {
       return false;
     }
-    for (let i = 0; i < bucket; i++){
+    for (let i = 0; i < bucket.length; i++){
       if (bucket[i][0] === key) {
         return true;
       } 
     }
     return false;
   }
-  remove(key) {
-    
+  remove(key) {   //the index of the bucket to remove
+    const index = this.buckets(this.hash(key));
+    const tmpBucket = new Array;
+    const currBuckets = this.buckets;
+    //if(!)
+    for (let i = 0; i < currBuckets.length; i++){
+      
+    }
+
+   // for (let i = 0;i<)
+
   }
-  length() {}
+  length() {
+    return this.size;
+  }
   clear() {}
   keys() {}
   values() {}
   entries() { 
-     return this.buckets;
+     ;
   }
   /* */
  
@@ -110,6 +121,6 @@ BUCKET = [
 ];
 */
 const testHash = new HashMap();
- testHash.set("Andrei").entries();
+ testHash.set("Andrei");
 
 console.log(testHash);

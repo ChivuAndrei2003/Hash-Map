@@ -73,8 +73,23 @@ class HashMap {
     return null;
 
   }
-  has(key) {}
-  remove(key) {}
+  has(key) {
+    const index = this.hash(key);
+    const bucket = this.buckets[index];
+    
+    if (!bucket) {
+      return false;
+    }
+    for (let i = 0; i < bucket; i++){
+      if (bucket[i][0] === key) {
+        return true;
+      } 
+    }
+    return false;
+  }
+  remove(key) {
+    
+  }
   length() {}
   clear() {}
   keys() {}

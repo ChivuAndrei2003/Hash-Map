@@ -17,15 +17,16 @@ class HashMap {
 
   set(key, value) {
     const index = this.hash(key);
-    const buckets = this.buckets[index];
 
-    if (index < 0 || index >= buckets.length) {
+    if (index < 0 || index >= this.buckets.length) {
       throw new Error("Trying to access index out of bounds");
     }
 
     if (!this.buckets[index]) {
       this.buckets[index] = [];
     }
+    
+    const buckets = this.buckets[index];
    
     for (let i = 0; i < buckets.length; i++) {
       if (buckets[i][0] === key) {
@@ -91,9 +92,16 @@ class HashMap {
     const index = this.buckets(this.hash(key));
     const tmpBucket = new Array;
     const currBuckets = this.buckets;
-    //if(!)
+    this.size = 0;
+
     for (let i = 0; i < currBuckets.length; i++){
-      
+      while (index[i] != key) {
+        tmpBucket += index[i];
+        this.size++;
+        return true;
+      }
+      return false;
+
     }
 
    // for (let i = 0;i<)
@@ -103,10 +111,13 @@ class HashMap {
     return this.size;
   }
   clear() {}
-  keys() {}
-  values() {}
+  keys() { }
+  
+  values() {
+    
+  }
   entries() { 
-     ;
+     
   }
   /* */
  
@@ -121,6 +132,6 @@ BUCKET = [
 ];
 */
 const testHash = new HashMap();
- testHash.set("Andrei");
+const test = testHash.set('andrei');
+console.log(test);
 
-console.log(testHash);

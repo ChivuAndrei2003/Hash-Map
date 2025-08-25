@@ -25,23 +25,22 @@ class HashMap {
     if (!this.buckets[index]) {
       this.buckets[index] = [];
     }
-    
+
     const buckets = this.buckets[index];
-   
+
     for (let i = 0; i < buckets.length; i++) {
       if (buckets[i][0] === key) {
         buckets[i][1] = value;
         return;
       }
     }
-    // if key doesn't exist ==>  add new pair [key ,value] 
+    // if key doesn't exist ==>  add new pair [key ,value]
     buckets.push([key, value]);
     this.size++;
-    
+
     if (this.size >= this.capacity * this.loadFactor) {
       this.resize();
     }
-
   }
 
   resize() {
@@ -62,65 +61,54 @@ class HashMap {
   get(key) {
     const index = this.hash(key);
     const bucket = this.buckets[index];
-    
+
     if (!bucket) {
       return null;
     }
-    for (let i = 0; i < bucket.length; i++){
+    for (let i = 0; i < bucket.length; i++) {
       if (bucket[i][0] === key) {
         return bucket[i][1];
-      } 
+      }
     }
     return null;
-
   }
   has(key) {
     const index = this.hash(key);
     const bucket = this.buckets[index];
-    
+
     if (!bucket) {
       return false;
     }
-    for (let i = 0; i < bucket.length; i++){
+    for (let i = 0; i < bucket.length; i++) {
       if (bucket[i][0] === key) {
         return true;
-      } 
+      }
     }
     return false;
   }
-  remove(key) {   //the index of the bucket to remove
-    const index = this.buckets(this.hash(key));
-    const tmpBucket = new Array;
-    const currBuckets = this.buckets;
-    this.size = 0;
-
-    for (let i = 0; i < currBuckets.length; i++){
-      while (index[i] != key) {
-        tmpBucket += index[i];
-        this.size++;
-        return true;
-      }
+  remove(key) {
+    if (this.has(key)) {
+      const index = this.hash(key);
+      let bucket = this.buckets[index];
+      bucket = bucket.filter((elements) => {
+        return elements.key != key;
+      });
+      this.buckets[index] = bucket;
+    } else {
       return false;
-
     }
-
-   // for (let i = 0;i<)
-
   }
+
   length() {
-    return this.size;
+    console.log(this.size);
   }
   clear() {}
-  keys() { }
-  
-  values() {
-    
+  keys() {}
+
+  values() {}
+  entries() {
+    console.log(this.buckets);
   }
-  entries() { 
-     
-  }
-  /* */
- 
 }
 
 //buckets example :
@@ -131,7 +119,20 @@ BUCKET = [
   ["orange", "orange"], // SECOND element: [key, value]
 ];
 */
-const testHash = new HashMap();
-const test = testHash.set('andrei');
-console.log(test);
+const test = new HashMap();
+test.set("apple", "red");
+test.set("banana", "yellow");
+test.set("carrot", "orange");
+test.set("dog", "brown");
+test.set("elephant", "gray");
+test.set("frog", "green");
+test.set("grape", "purple");
+test.set("hat", "black");
+test.set("ice cream", "white");
+test.set("jacket", "blue");
+test.set("kite", "pink");
+test.set("lion", "golden");
 
+console.log(test.entries());
+console.log(test.length());
+console.log(test.entries());

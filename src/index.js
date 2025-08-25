@@ -102,7 +102,10 @@ class HashMap {
   length() {
     console.log(this.size);
   }
-  clear() {}
+  clear() {
+    this.buckets = {};
+    console.log(this.buckets);
+  }
   keys() {}
 
   values() {}
@@ -135,4 +138,4 @@ test.set("lion", "golden");
 
 console.log(test.entries());
 console.log(test.length());
-console.log(test.entries());
+console.log(test.clear());

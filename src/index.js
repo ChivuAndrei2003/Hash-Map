@@ -106,9 +106,33 @@ class HashMap {
     this.buckets = {};
     console.log(this.buckets);
   }
-  keys() {}
+  keys() {
+    let allKeys = [];
 
-  values() {}
+    for (let i = 0; i < this.buckets.length; i++) {
+      const bucket = this.buckets[i];
+      if (bucket) {
+        for (let [key, value] of bucket) {
+          allKeys.push(key);
+        }
+      }
+    }
+    return allKeys;
+  }
+
+  values() {
+    let allValues = [];
+
+    for (let i = 0; i < this.buckets.length; i++) {
+      const bucket = this.buckets[i];
+      if (bucket) {
+        for (let [key, value] of bucket) {
+          allValues.push(value);
+        }
+      }
+    }
+    return allValues;
+  }
   entries() {
     console.log(this.buckets);
   }
@@ -116,11 +140,11 @@ class HashMap {
 
 //buckets example :
 /*
-BUCKET = [
+BUCKETS= [
     [0]        [1]
-  ["apple",   "red"  ], // FIRST element: [key, value]
-  ["orange", "orange"], // SECOND element: [key, value]
-];
+  ["apple",   "red"  ], // FIRST element: [key, value] // and every index of [key,value] 
+  ["orange", "orange"], // SECOND element: [key, value]  //has a hash code which is used to
+];                                                         //acces each [key,value] pairs
 */
 const test = new HashMap();
 test.set("apple", "red");
@@ -138,4 +162,5 @@ test.set("lion", "golden");
 
 console.log(test.entries());
 console.log(test.length());
-console.log(test.clear());
+console.log(test.keys());
+console.log(test.values());

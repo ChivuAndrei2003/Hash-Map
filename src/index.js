@@ -1,114 +1,167 @@
-// Hash Map implementation using separate chaining for collision resolution
 class HashMap {
-  // Initialize the hash map with default capacity and load factor
   constructor(capacity = 16, loadFactor = 0.75) {
-    this.loadFactor = loadFactor; // Threshold for resizing (75% full by default)
-    this.capacity = capacity; // Number of buckets in the hash table
-    this.buckets = new Array(capacity); // Array of buckets to store key-value pairs
-    this.size = 0; // Current number of key-value pairs stored
+    this.loadFactor = loadFactor;
+    this.capacity = capacity;
+    this.buckets = new Array(capacity);
+    this.size = 0;
   }
-  // Hash function to convert string keys into bucket indices
   hash(key) {
     let hashCode = 0;
-    const primeNumber = 31; // Prime number for better hash distribution
+    const primeNumber = 31;
 
-    // Calculate hash using polynomial rolling hash algorithm
     for (let i = 0; i < key.length; i++) {
       hashCode = (primeNumber * hashCode + key.charCodeAt(i)) % this.capacity;
     }
-    return hashCode; // Returns index between 0 and capacity-1
+    return hashCode;
   }
 
-  // Insert or update a key-value pair in the hash map
   set(key, value) {
-    const index = this.hash(key); // Get bucket index for this key
+    const index = this.hash(key);
 
-    // Safety check to ensure index is within bounds
     if (index < 0 || index >= this.buckets.length) {
       throw new Error("Trying to access index out of bounds");
     }
 
-    // Initialize bucket as empty array if it doesn't exist
     if (!this.buckets[index]) {
       this.buckets[index] = [];
     }
 
     const buckets = this.buckets[index];
-    // Check if key already exists in this bucket (handle collisions)
-    for (let i = 0; i < this.buckets.length; i++) {
+
+    for (let i = 0; i < buckets.length; i++) {
       if (buckets[i][0] === key) {
-        buckets[i][1] = value; // Update existing key's value
+        buckets[i][1] = value;
         return;
       }
     }
     // if key doesn't exist ==>  add new pair [key ,value]
     buckets.push([key, value]);
-    this.size++; // Increment total number of entries
-    
-    // Check if we need to resize the hash map to maintain performance
+    this.size++;
+
     if (this.size >= this.capacity * this.loadFactor) {
       this.resize();
     }
   }
 
-  // Resize the hash map when load factor threshold is exceeded
   resize() {
-    const oldBuckets = this.buckets; // Store reference to current buckets
-    this.capacity *= 2; // Double the capacity
-    this.buckets = new Array(this.capacity); // Create new bucket array
-    this.size = 0; // Reset size (will be recalculated during rehashing)
+    const oldBuckets = this.buckets;
+    this.capacity *= 2;
+    this.buckets = new Array(this.capacity);
+    this.size = 0;
 
-    // Rehash all existing key-value pairs into the new larger bucket array
-    for (let bucket of this.buckets) {
+    for (let bucket of oldBuckets) {
       if (bucket) {
         for (let [key, value] of bucket) {
-          this.set(key, value); // Rehash each pair with new capacity
+          this.set(key, value);
         }
       }
     }
   }
 
-  // Retrieve a value by its key (incomplete implementation)
   get(key) {
-    //let index = this.hash(key);
-    const buckets = this.buckets
-    for (let i = 0; i < this.buckets.length; i++){
-      
+    const index = this.hash(key);
+    const bucket = this.buckets[index];
+
+    if (!bucket) {
+      return null;
+    }
+    for (let i = 0; i < bucket.length; i++) {
+      if (bucket[i][0] === key) {
+        return bucket[i][1];
+      }
+    }
+    return null;
+  }
+  has(key) {
+    const index = this.hash(key);
+    const bucket = this.buckets[index];
+
+    if (!bucket) {
+      return false;
+    }
+    for (let i = 0; i < bucket.length; i++) {
+      if (bucket[i][0] === key) {
+        return true;
+      }
+    }
+    return false;
+  }
+  remove(key) {
+    if (this.has(key)) {
+      const index = this.hash(key);
+      let bucket = this.buckets[index];
+      bucket = bucket.filter((elements) => {
+        return elements.key != key;
+      });
+      this.buckets[index] = bucket;
+    } else {
+      return false;
     }
   }
-  
-  // Check if a key exists in the hash map (placeholder)
-  has(key) {}
-  
-  // Remove a key-value pair from the hash map (placeholder)
-  remove(key) {}
-  
-  // Return the number of key-value pairs (placeholder)
-  length() {}
-  
-  // Remove all key-value pairs from the hash map (placeholder)
-  clear() {}
-  
-  // Return an array of all keys (placeholder)
-  keys() {}
-  
-  // Return an array of all values (placeholder)
-  values() {}
-  
-  // Return an array of all [key, value] pairs (placeholder)
-  entries() {}
+
+  length() {
+    console.log(this.size);
+  }
+  clear() {
+    this.buckets = {};
+    console.log(this.buckets);
+  }
+  keys() {
+    let allKeys = [];
+
+    for (let i = 0; i < this.buckets.length; i++) {
+      const bucket = this.buckets[i];
+      if (bucket) {
+        for (let [key, value] of bucket) {
+          allKeys.push(key);
+        }
+      }
+    }
+    return allKeys;
+  }
+
+  values() {
+    let allValues = [];
+
+    for (let i = 0; i < this.buckets.length; i++) {
+      const bucket = this.buckets[i];
+      if (bucket) {
+        for (let [key, value] of bucket) {
+          allValues.push(value);
+        }
+      }
+    }
+    return allValues;
+  }
+  entries() {
+    console.log(this.buckets);
+  }
 }
-// Example of how buckets store key-value pairs using separate chaining:
+
+//buckets example :
 /*
-BUCKET = [
+BUCKETS= [
     [0]        [1]
-  ["apple",   "red"  ], // FIRST element: [key, value]
-  ["orange", "orange"], // SECOND element: [key, value]
-];
+  ["apple",   "red"  ], // FIRST element: [key, value] // and every index of [key,value] 
+  ["orange", "orange"], // SECOND element: [key, value]  //has a hash code which is used to
+];                                                         //acces each [key,value] pairs
 */
+const test = new HashMap();
+test.set("apple", "red");
+test.set("banana", "yellow");
+test.set("carrot", "orange");
+test.set("dog", "brown");
+test.set("elephant", "gray");
+test.set("frog", "green");
+test.set("grape", "purple");
+test.set("hat", "black");
+test.set("ice cream", "white");
+test.set("jacket", "blue");
+test.set("kite", "pink");
+test.set("lion", "golden");
 
-// Test code to demonstrate hash map functionality
-const testHash = new HashMap();
+console.log(test.entries());
+console.log(test.length());
+console.log(test.keys());
+console.log(test.values());
 
-testHash.set("") // Test with empty string key
-console.log(testHash.hash("dna")); // Output the hash value for "dna"

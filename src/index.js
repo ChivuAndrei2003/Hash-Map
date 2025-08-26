@@ -41,7 +41,7 @@ class HashMap {
         return;
       }
     }
-    // if key doesn't exist ==>  add new pair [key ,value] 
+    // if key doesn't exist ==>  add new pair [key ,value]
     buckets.push([key, value]);
     this.size++; // Increment total number of entries
     
@@ -49,7 +49,6 @@ class HashMap {
     if (this.size >= this.capacity * this.loadFactor) {
       this.resize();
     }
-
   }
 
   // Resize the hash map when load factor threshold is exceeded
